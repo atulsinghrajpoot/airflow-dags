@@ -5,6 +5,8 @@ default_args = {
     "owner": "airflow",
     "start_date": datetime(2024, 1, 1)
 }
+def my_function():
+    print("Hello from the Airflow task!")
  
 with DAG( dag_id="namespace_example",
     default_args=default_args,
