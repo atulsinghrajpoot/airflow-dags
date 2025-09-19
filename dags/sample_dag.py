@@ -34,7 +34,7 @@ with DAG(
     task2 = BashOperator(
         task_id="say_hello",
         bash_command="echo 'Hello from Airflow DAG!'",
-        executor_config={"kubernetes": {"namespace": "system"}}
+        executor_config={"kubernetes": {"namespace": "cisco"}}
     )
 
     task1 >> task2
