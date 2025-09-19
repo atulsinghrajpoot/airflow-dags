@@ -1,43 +1,22 @@
-from datetime import datetime, timedelta
-
 from airflow import DAG
-from airflow.configuration import conf
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
+from datetime import datetime
 
-default_args = {
-    'owner': 'airflow',
-    'depends_on_past': False,
-    'start_date': datetime(2022, 1, 1),
-    'email_on_failure': False,
-    'email_on_retry': False,
-    'retries': 1,
-    'retry_delay': timedelta(minutes=5),
-}
+with DAG(
+    dag_id="k8s_operator_example",
+    start_date=datetime(2024, 9, 1),
+    schedule_interval=None,
+    catchup=False,
+) as dag:
 
-namespace = conf.get('kubernetes', 'NAMESPACE')
-
-# This will detect the default namespace locally and read the
-# environment namespace when deployed to Astronomer.
-if namespace =='default':
-    config_file = '/usr/local/airflow/include/.kube/config'
-    in_cluster = False
-else:
-    in_cluster = True
-    config_file = None
-
-dag = DAG('example_kubernetes_pod', schedule_interval='@once', default_args=default_args)
-
-
-with mountain:
-    KubernetesPodOperator(
-        namespace="cisco",
-        image="hello-world",
-        labels={"<pod-label>": "<label-name>"},
-        name="airflow-test-pod",
-        task_id="task-one",
-        in_cluster=in_cluster, # if set to true, will look in the cluster, if false, looks for file
-        cluster_context="docker-desktop", # is ignored when in_cluster is set to True
-        config_file=config_file,
-        is_delete_operator_pod=True,
+    k8s_task = KubernetesPodOperator(
+        namespace="airflow",
+        image="python:3.9-slim",
+        cmds=["python", "-c"],
+        arguments=["print('Hello from KubernetesPodOperator!')"],
+        labels={"app": "airflow"},
+        name="k8s-operator-task",
+        task_id="run_pod_task",
+        is_delete_operator_pod=True,   # cleanup after run
         get_logs=True,
     )
