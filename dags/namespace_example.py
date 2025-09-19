@@ -15,6 +15,7 @@ with DAG( dag_id="namespace_example",
     start_date=datetime(2025, 1, 1),
     catchup=False,
     tags=["example"]) as dag:
+    
     task = PythonOperator(
         task_id='run_in_other_namespace',
         python_callable=my_function,
@@ -22,4 +23,5 @@ with DAG( dag_id="namespace_example",
             "pod_override": {
                 "metadata": {"namespace": "cisco"}
             }
+        }
     )
