@@ -12,7 +12,7 @@ with DAG('namespace_example', default_args=default_args, schedule_interval='@dai
         python_callable=my_function,
         executor_config={
             "KubernetesExecutor": {
-                "namespace": "team-alpha"  # Specify your target namespace here
+                "namespace": "cisco"  # Specify your target namespace here
             }
         }
     )
