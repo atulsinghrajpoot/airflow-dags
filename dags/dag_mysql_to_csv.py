@@ -8,9 +8,9 @@ def read_db_write_csv():
     import pandas as pd
     # Connect to MySQL (running at localhost:3306) and read data
     conn = mysql.connector.connect(
-        host='localhost', user='root', password='root', database='PR_JOS'
+        host='localhost', user='root', password='root', database='openmetadata_db'
     )
-    df = pd.read_sql('SELECT * FROM some_table', conn)
+    df = pd.read_sql('SELECT * FROM dbservice_entity', conn)
     conn.close()
     # Write DataFrame to CSV
     df.to_csv('/tmp/output.csv', index=False)
