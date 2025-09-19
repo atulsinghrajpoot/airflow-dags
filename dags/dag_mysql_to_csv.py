@@ -1,7 +1,7 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def read_db_write_csv():
     import mysql.connector
