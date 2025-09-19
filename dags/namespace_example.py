@@ -19,8 +19,7 @@ with DAG( dag_id="namespace_example",
         task_id='run_in_other_namespace',
         python_callable=my_function,
         executor_config={
-            "KubernetesExecutor": {
-                "namespace": "cisco"  # Specify your target namespace here
+            "pod_override": {
+                "metadata": {"namespace": "cisco"}
             }
-        }
     )
