@@ -34,7 +34,11 @@ with DAG(
     task2 = BashOperator(
         task_id="say_hello",
         bash_command="echo 'Hello from Airflow DAG!'",
-        executor_config={"pod_override": "metadata": {"namespace": "cisco"}}
+        executor_config={
+            "pod_override": {
+                "metadata": {"namespace": "cisco"}
+            }
+        }
     )
 
     task1 >> task2
