@@ -17,11 +17,12 @@ with DAG(
     dag_id="sample_dag",
     default_args=default_args,
     description="A simple sample DAG",
-    schedule=timedelta(minutes=1),  # runs every 5 mins
+    schedule=timedelta(minutes=1),  # runs every 1 minute
     start_date=datetime(2025, 1, 1),
     catchup=False,
     tags=["example"],
 ) as dag:
+
 
 
     task1 = BashOperator(
