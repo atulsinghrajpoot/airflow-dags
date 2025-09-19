@@ -8,7 +8,7 @@ default_args = {
 def my_function():
     print("Hello from the Airflow task!")
  
-with DAG( dag_id="namespace_example",
+with DAG( dag_id="mulit_namespace",
     default_args=default_args,
     description="A simple sample DAG",
     schedule=timedelta(minutes=5),  # runs every 1 minute
