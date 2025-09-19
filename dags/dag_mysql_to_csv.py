@@ -15,7 +15,10 @@ def read_db_write_csv():
     # Write DataFrame to CSV
     df.to_csv('/tmp/output.csv', index=False)
 
-with DAG(dag_id='example_read_write', start_date=datetime(2025,9,19), catchup=False, schedule_interval=None) as dag:
+with DAG(dag_id='example_read_write', 
+         start_date=datetime(2025,9,19), 
+         catchup=False, 
+         schedule=timedelta(minutes=5)) as dag:
     # Python task: read from MySQL and write CSV
     read_task = PythonOperator(
         task_id='read_and_write_csv',
