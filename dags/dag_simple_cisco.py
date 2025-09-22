@@ -6,7 +6,7 @@ with DAG(
     dag_id="simple_cisco_dag",
     start_date=datetime(2025, 9, 19),
     catchup=False,
-    schedule=timedelta(minutes=5)
+    schedule=None
 ) as dag:
 
     k8s_task = KubernetesPodOperator(
