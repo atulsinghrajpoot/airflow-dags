@@ -23,7 +23,7 @@ generic_shared_volume_mount = k8s.V1VolumeMount(
 default_args = {"owner": "airflow"}
 
 with DAG(
-    dag_id="simple_dbt_dag",
+    dag_id="sample_flow",
     default_args=default_args,
     schedule=None,
     start_date=datetime(2025, 1, 1),
@@ -37,7 +37,7 @@ with DAG(
         namespace="ansible",  # 👈 runs in Cisco namespace
         image="alpine:latest",  # replace with dbt image later
         cmds=["sh", "-c"],
-        arguments=["echo 'Running dbt transformation...' && sleep 10"],
+        arguments=["echo 'Running dbt transformation...' && sleep 1000"],
         get_logs=True,
         in_cluster=True,
         # is_delete_operator_pod=True,
