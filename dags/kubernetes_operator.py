@@ -34,7 +34,7 @@ with DAG(
     dbt_task = KubernetesPodOperator(
         task_id="run_dbt_task",
         name="run-dbt-task",
-        namespace="ansible",  # 👈 runs in Cisco namespace
+        namespace="cisco",  # 👈 runs in Cisco namespace
         image="alpine:latest",  # replace with dbt image later
         cmds=["sh", "-c"],
         arguments=["echo 'Running dbt transformation...' && sleep 1000"],
