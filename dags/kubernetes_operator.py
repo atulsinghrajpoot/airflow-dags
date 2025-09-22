@@ -25,7 +25,7 @@ default_args = {"owner": "airflow"}
 with DAG(
     dag_id="simple_dbt_dag",
     default_args=default_args,
-    schedule_interval=None,
+    schedule=None,
     start_date=datetime(2025, 1, 1),
     catchup=False,
     tags=["k8s", "dbt"],
