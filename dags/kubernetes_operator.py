@@ -1,6 +1,6 @@
 from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
-from airflow.utils.dates import days_ago
+from datetime import datetime, timedelta
 from kubernetes import client as k8s
 
 # -----------------------------
@@ -26,7 +26,7 @@ with DAG(
     dag_id="simple_dbt_dag",
     default_args=default_args,
     schedule_interval=None,
-    start_date=days_ago(1),
+    start_date=datetime(2025, 1, 1),
     catchup=False,
     tags=["k8s", "dbt"],
 ):
