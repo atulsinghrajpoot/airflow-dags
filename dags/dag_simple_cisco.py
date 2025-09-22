@@ -15,5 +15,6 @@ with DAG(
         cmds=["echo", "Hello from Cisco namespace!"],
         name="hello-cisco",
         task_id="hello_cisco_task",
-        get_logs=True
+        get_logs=False,
+        is_delete_operator_pod=False
     )
