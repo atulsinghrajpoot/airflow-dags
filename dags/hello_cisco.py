@@ -13,7 +13,7 @@ default_args = {
 }
 
 with DAG(
-    dag_id="hellow_cisco",
+    dag_id="sample_dag",
     default_args=default_args,
     description="A simple sample DAG",
     schedule=timedelta(minutes=5),
@@ -21,6 +21,16 @@ with DAG(
     catchup=False,
     tags=["example"],
 ) as dag:
+
+    task1 = BashOperator(
+        task_id="print_date",
+        bash_command="date",
+        executor_config={
+            "pod_override": V1Pod(
+                metadata=V1ObjectMeta(namespace="airflow")
+            )
+        }
+    )
 
     task2 = BashOperator(
         task_id="say_hello",
@@ -32,3 +42,4 @@ with DAG(
         }
     )
 
+    task1 >> task2
