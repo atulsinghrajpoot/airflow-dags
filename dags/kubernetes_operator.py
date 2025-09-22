@@ -34,13 +34,13 @@ with DAG(
     dbt_task = KubernetesPodOperator(
         task_id="run_dbt_task",
         name="run-dbt-task",
-        namespace="cisco",  # 👈 runs in Cisco namespace
+        namespace="ansible",  # 👈 runs in Cisco namespace
         image="alpine:latest",  # replace with dbt image later
         cmds=["sh", "-c"],
         arguments=["echo 'Running dbt transformation...' && sleep 10"],
         get_logs=True,
         in_cluster=True,
-        is_delete_operator_pod=True,
+        # is_delete_operator_pod=True,
         service_account_name="airflow-service-account",  # 👈 must exist with RBAC
         volume_mounts=[generic_shared_volume_mount],
         volumes=[generic_shared_volume],
