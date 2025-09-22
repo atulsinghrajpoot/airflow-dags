@@ -1,22 +1,47 @@
 from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
-from datetime import datetime
+from airflow.utils.dates import days_ago
+from kubernetes import client as k8s
+
+# -----------------------------
+# Shared Volume (optional, for testing)
+# -----------------------------
+generic_shared_volume = k8s.V1Volume(
+    name="shared-temp-volume",
+    empty_dir=k8s.V1EmptyDirVolumeSource()
+)
+
+generic_shared_volume_mount = k8s.V1VolumeMount(
+    name="shared-temp-volume",
+    mount_path="/tmp/shared",
+    read_only=False
+)
+
+# -----------------------------
+# DAG Definition
+# -----------------------------
+default_args = {"owner": "airflow"}
 
 with DAG(
-    dag_id="k8s_operator_example",
-    start_date=datetime(2024, 9, 1),
+    dag_id="simple_dbt_dag",
+    default_args=default_args,
     schedule_interval=None,
+    start_date=days_ago(1),
     catchup=False,
-) as dag:
+    tags=["k8s", "dbt"],
+):
 
-    k8s_task = KubernetesPodOperator(
-        namespace="airflow",
-        image="python:3.9-slim",
-        cmds=["python", "-c"],
-        arguments=["print('Hello from KubernetesPodOperator!')"],
-        labels={"app": "airflow"},
-        name="k8s-operator-task",
-        task_id="run_pod_task",
-        is_delete_operator_pod=True,   # cleanup after run
+    dbt_task = KubernetesPodOperator(
+        task_id="run_dbt_task",
+        name="run-dbt-task",
+        namespace="cisco",  # 👈 runs in Cisco namespace
+        image="alpine:latest",  # replace with dbt image later
+        cmds=["sh", "-c"],
+        arguments=["echo 'Running dbt transformation...' && sleep 10"],
         get_logs=True,
+        in_cluster=True,
+        is_delete_operator_pod=True,
+        service_account_name="airflow-service-account",  # 👈 must exist with RBAC
+        volume_mounts=[generic_shared_volume_mount],
+        volumes=[generic_shared_volume],
     )
