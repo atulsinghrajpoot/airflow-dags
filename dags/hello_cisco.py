@@ -13,7 +13,7 @@ default_args = {
 }
 
 with DAG(
-    dag_id="sample_dag",
+    dag_id="hello_dag",
     default_args=default_args,
     description="A simple sample DAG",
     schedule=timedelta(minutes=5),
