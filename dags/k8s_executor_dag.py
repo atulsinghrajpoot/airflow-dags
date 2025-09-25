@@ -1,19 +1,26 @@
 from airflow import DAG
-from airflow.operators.bash import BashOperator
+from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
 from datetime import datetime
 
 with DAG(
-    dag_id="k8s_executor_dag",
+    dag_id="two_pods_both_in_cisco",
     start_date=datetime(2025, 9, 19),
     catchup=False,
     schedule=None
 ) as dag:
-    task = BashOperator(
+
+    k8s_task = KubernetesPodOperator(
+        namespace="cisco",   # the business pod
+        image="alpine:3.18",
+        cmds=["sh", "-c"],
+        arguments=["echo 'Hello from Cisco'; sleep 60"],
+        name="hello-cisco",
         task_id="hello_cisco_task",
-        bash_command="echo 'Hello from Cisco'; sleep 60",
+        get_logs=True,
+        is_delete_operator_pod=False,
         executor_config={
             "KubernetesExecutor": {
-                "namespace": "cisco"
+                "namespace": "cisco"   # the operator’s pod
             }
         }
     )
