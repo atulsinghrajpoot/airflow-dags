@@ -13,7 +13,7 @@ with DAG(
         namespace="cisco",           # Pod will run in Cisco namespace
         image="alpine:3.18",         # lightweight container
         cmds=["sh", "-c"],
-        arguments=["echo 'Hello from Cisco'; sleep 3600"],
+        arguments=["echo 'Hello from Cisco'; sleep 60"],
         name="hello-cisco",
         task_id="hello_cisco_task",
         get_logs=False,
