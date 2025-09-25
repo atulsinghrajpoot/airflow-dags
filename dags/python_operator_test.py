@@ -25,8 +25,7 @@ with DAG(
 
     task2 = BashOperator(
         task_id="say_hello",
-        cmds=["sh", "-c"],
-        arguments=["echo 'Hello from Cisco'; sleep 60"],
+        bash_command="echo 'Hello from Airflow DAG!'; sleep 60",
         executor_config={
             "pod_override": V1Pod(
                 metadata=V1ObjectMeta(namespace="cisco")
